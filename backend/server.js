@@ -7,6 +7,8 @@ const app = express();
 const PORT = 4000;
 const userRoutes = express.Router();
 const productRoutes = express.Router();
+const vendorRoutes = express.Router();
+const customerRoutes = express.Router();
 
 let User = require('./models/user');
 let Vendor = require('./models/vendor');
@@ -72,9 +74,24 @@ userRoutes.route('/customeradd').post(function(req, res) {
 });
 
 // Getting a user by id
-userRoutes.route('/:id').get(function(req, res) {
+vendorRoutes.route('/:id').get(function(req, res) {
     let id = req.params.id;
     Vendor.find({username : id}, function (err, docs){
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+            console.log(docs);
+             res.json(docs);
+        }
+    });
+});
+// Getting a user by id
+customerRoutes.route('/:id').get(function(req, res) {
+    let id = req.params.id;
+    Customer.find({username : id}, function (err, docs){
         if (err) 
         {
             console.log(err);
@@ -110,6 +127,8 @@ productRoutes.route('/add').post(function(req, res) {
 
 
 app.use('/', userRoutes);
+app.use('/vendor', vendorRoutes);
+app.use('/customer', customerRoutes);
 app.use('/product', productRoutes);
 
 app.listen(PORT, function() {
