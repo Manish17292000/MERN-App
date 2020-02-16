@@ -81,7 +81,8 @@ userRoutes.route('/:id').get(function(req, res) {
         }
         else
         { 
-             res.json(docs.length);
+            // console.log(docs.username);
+             res.json(docs);
         }
     });
 });

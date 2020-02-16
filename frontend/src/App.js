@@ -12,29 +12,12 @@ import CreateUser from './components/create-user.component'
 function App() {
   return (
     <Router>
-      <div className="container">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to="/" className="navbar-brand"> App </Link>
-
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
-                <Link to="/user" className="nav-link">Login</Link> 
-              </li>
-              <li className="navbar-item">
-                <Link to="/register" className="nav-link">Register</Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
-
-        <br/>
-        <Route path="/user" exact component={Login}/>
         <Route path="/" exact component={UsersList}/>
-        <Route path="/customerget" exact component={CustomerList}/>
-        <Route path="/vendorget" exact component={VendorList}/>
+        <Route path="/user"  component={Login}/>
+        <Route path="/customerget" component={CustomerList}/>
+        <Route path="/vendorget" component={VendorList}/>
         <Route path="/register" component={CreateUser}/>
-      </div>
+        <Route path="/view/:id" component={UsersView}/>
     </Router>
   );
 }
