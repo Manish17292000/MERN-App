@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 let Product = new mongoose.Schema({
+
+    username : {
+    	type : String
+    },
     productName: {
         type: String
     },
@@ -9,7 +13,15 @@ let Product = new mongoose.Schema({
     },
     bundleQuantity: {
         type: Number
+    },
+    leftQuantity: {
+        type: Number
+    },
+    status: {
+    	type : String
+        
     }
+
 });
 
 module.exports = mongoose.model('Product', Product);	

@@ -9,11 +9,13 @@ const userRoutes = express.Router();
 const productRoutes = express.Router();
 const vendorRoutes = express.Router();
 const customerRoutes = express.Router();
+const orderRoutes = express.Router();
 
 let User = require('./models/user');
 let Vendor = require('./models/vendor');
 let Customer = require('./models/customer');
 let Product = require('./models/product.model');
+let Orders = require('./models/orders');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -83,7 +85,6 @@ vendorRoutes.route('/:id').get(function(req, res) {
         }
         else
         { 
-            console.log(docs);
              res.json(docs);
         }
     });
@@ -98,7 +99,6 @@ customerRoutes.route('/:id').get(function(req, res) {
         }
         else
         { 
-            // console.log(docs.username);
              res.json(docs);
         }
     });
@@ -114,6 +114,22 @@ productRoutes.route('/').get(function(req, res) {
     });
 });
 
+productRoutes.route('/:id').get(function(req, res) {
+    // let id = req.params.id;
+    let id = mongoose.Types.ObjectId("5e499563a1ddbc14e364fd8a");
+    Product.find({_id : id}, function (err, docs){
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+             res.json(docs);
+        }
+    });
+});
+
+
 productRoutes.route('/add').post(function(req, res) {
     let product = new Product(req.body);
     product.save()
@@ -125,11 +141,45 @@ productRoutes.route('/add').post(function(req, res) {
         });
 });
 
+productRoutes.route('/update').post(function(req, res) {
+    // console.log(req.body["id"]);
+    Product.findByIdAndUpdate(req.body["id"] , {
+    $set: {leftQuantity : req.body["newleftQuantity"]}
+   } )
+   
+   .catch( error => {
+    console.log( `Error updating user by ID: ${error.message}` );
+    next( error );
+   } );
+});
+
+orderRoutes.route('/add').post(function(req, res) {
+    // console.log()
+    let Order = new Orders(req.body);
+    Order.save()
+        .then(product => {
+            res.status(200).json({'User': 'Order added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('Error');
+        });
+});
+
+orderRoutes.route('/').get(function(req, res) {
+    Orders.find(function(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    });
+});
 
 app.use('/', userRoutes);
 app.use('/vendor', vendorRoutes);
 app.use('/customer', customerRoutes);
 app.use('/product', productRoutes);
+app.use('/orders', orderRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on port: " + PORT);
