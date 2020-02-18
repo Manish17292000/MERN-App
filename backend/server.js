@@ -129,6 +129,53 @@ productRoutes.route('/:id/:id2').get(function(req, res) {
     });
 });
 
+productRoutes.route('/sort/bundlePrice/:id2/:id3').get(function(req, res) {
+    let id2 = req.params.id2;
+    let id3 = parseInt(req.params.id3);
+
+    Product.find({status : id2}, function (err, docs)
+    {
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+             res.json(docs);
+        }
+    }).sort({"bundlePrice" : id3});
+});
+productRoutes.route('/sort/leftQuantity/:id/:id3').get(function(req, res) {
+    let id3 = parseInt(req.params.id3);
+    let id = req.params.id2;
+    Product.find({ status : id}, function (err, docs)
+    {
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+             res.json(docs);
+        }
+    }).sort({"leftQuantity" : id3});
+});
+productRoutes.route('/sort/rating/:id2/:id3').get(function(req, res) {
+    let id2 = req.params.id2;
+    let id3 = parseInt(req.params.id3);
+    Product.find({ status : id2}, function (err, docs)
+    {
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+             res.json(docs);
+        }
+    }).sort({"rating" : id3});
+});
+
 
 productRoutes.route('/add').post(function(req, res) {
     let product = new Product(req.body);
