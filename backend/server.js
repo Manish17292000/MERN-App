@@ -129,6 +129,44 @@ productRoutes.route('/:id/:id2').get(function(req, res) {
     });
 });
 
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+productRoutes.route('/search/:id2/:id3').get(function(req, res) {
+    let id2 = req.params.id2;
+    let id3 = req.params.id3;
+    if (id3==='-')
+    {
+        Product.find(function (err, docs)
+    {
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+             res.json(docs);
+        }
+    });
+    }
+    else{
+    const regex = new RegExp(escapeRegex(id3), 'gi');
+    console.log(regex)
+    Product.find({productName: regex}, function (err, docs)
+    {
+        if (err) 
+        {
+            console.log(err);
+        }
+        else
+        { 
+             res.json(docs);
+        }
+    });
+    
+    }
+});
+
 productRoutes.route('/sort/bundlePrice/:id2/:id3').get(function(req, res) {
     let id2 = req.params.id2;
     let id3 = parseInt(req.params.id3);
