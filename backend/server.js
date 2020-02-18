@@ -114,10 +114,10 @@ productRoutes.route('/').get(function(req, res) {
     });
 });
 
-productRoutes.route('/:id').get(function(req, res) {
-    // let id = req.params.id;
-    let id = mongoose.Types.ObjectId("5e499563a1ddbc14e364fd8a");
-    Product.find({_id : id}, function (err, docs){
+productRoutes.route('/:id/:id2').get(function(req, res) {
+    let id = req.params.id;
+    let id2 = req.params.id2;
+    Product.find({username : id, status : id2}, function (err, docs){
         if (err) 
         {
             console.log(err);
@@ -144,7 +144,7 @@ productRoutes.route('/add').post(function(req, res) {
 productRoutes.route('/update').post(function(req, res) {
     // console.log(req.body["id"]);
     Product.findByIdAndUpdate(req.body["id"] , {
-    $set: {leftQuantity : req.body["newleftQuantity"]}
+    $set: {leftQuantity : req.body["newleftQuantity"], status : req.body["status"] }
    } )
    
    .catch( error => {
